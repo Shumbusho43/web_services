@@ -4,10 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.Date;
@@ -17,16 +14,29 @@ import java.util.Date;
 @Table(name="Student")
 public class Student {
    @Id
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String firstName;
     private String lastName;
     private LocalDate dob;
+    private String email;
+    @ManyToOne
+    @JoinColumn(name = "department_id")
+    private Department department;
     @Transient
     private int age;
     public Student(String firstName,String lastName,LocalDate dob){
         this.firstName=firstName;
         this.lastName=lastName;
         this.dob=dob;
+    }
+    //all args constructor
+    public Student(String firstName,String lastName,LocalDate dob,String email,Department department){
+        this.firstName=firstName;
+        this.lastName=lastName;
+        this.dob=dob;
+        this.email=email;
+        this.department=department;
     }
     public Long getId() {
         return id;
@@ -70,6 +80,22 @@ public class Student {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
     }
 
     @Override
